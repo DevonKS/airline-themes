@@ -16,6 +16,8 @@
 (require 'powerline)
 (require 'cl-lib)
 
+(defface window-number-color  '((t (:foreground "#141413" :background "#0a9dff" :weight normal))) "Window Number Color"  :group 'airline-themes)
+
 (defface airline-normal-outer  '((t (:foreground "#141413" :background "#aeee00" :weight normal))) "Airline Normal Outer Face"  :group 'airline-themes)
 (defface airline-normal-inner  '((t (:foreground "#f4cf86" :background "#45413b" :weight normal))) "Airline Normal Inner Face"  :group 'airline-themes)
 (defface airline-normal-center '((t (:foreground "#8cffba" :background "#242321" :weight normal))) "Airline Normal Center Face" :group 'airline-themes)
@@ -222,7 +224,13 @@ Valid Values: airline-directory-full, airline-directory-shortened, nil (disabled
                                  'airline-normal-center)
                              'airline-inactive3))
 
+                          (window-number-face (if (powerline-selected-window-active) 'window-number-color 'powerline-inactive1))
+
                           ;; Left Hand Side
+                          (window-number (list
+                                          (powerline-raw (concat " " (winum-get-number-string) " ") window-number-face)
+                                          (funcall separator-left window-number-face outer-face)))
+                          
                           (lhs-mode (if (featurep 'evil)
                                         (list
                                          ;; Evil Mode Name
@@ -282,7 +290,7 @@ Valid Values: airline-directory-full, airline-directory-shortened, nil (disabled
                                      ;; (funcall separator-right face1 face2)
                                    ))
 
-                          (lhs (append lhs-mode lhs-rest))
+                          (lhs (append window-number lhs-mode lhs-rest))
 
                           ;; Right Hand Side
                           (rhs (list (powerline-raw global-mode-string center-face 'r)
@@ -361,6 +369,7 @@ Valid Values: airline-directory-full, airline-directory-shortened, nil (disabled
    theme-name
    `(which-func            ((t ( :foreground ,normal-center-foreground :background ,normal-center-background :bold t))))
 
+   `(window-number-color   ((t ( :foreground ,insert-outer-foreground  :background "#EEAD0E"))))
    `(airline-normal-outer  ((t ( :foreground ,normal-outer-foreground  :background ,normal-outer-background))))
    `(airline-normal-inner  ((t ( :foreground ,normal-inner-foreground  :background ,normal-inner-background))))
    `(airline-normal-center ((t ( :foreground ,normal-center-foreground :background ,normal-center-background))))
